@@ -1,0 +1,47 @@
+.loginCard {
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  
+  .subtitle {
+    color: var(--slate);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+  }
+  
+  .switchText {
+    text-align: center;
+    color: var(--slate);
+    font-size: 0.9rem;
+    margin-top: 24px;
+  }
+  
+  .switchLink {
+    color: var(--flame-light);
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  
+  .switchLink:hover {
+    color: var(--flame);
+  }
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 480px) {
+    .loginCard {
+      padding: 32px 20px;
+    }
+  }

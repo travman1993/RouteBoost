@@ -1,0 +1,51 @@
+.authWrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .authGlow {
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(255, 92, 0, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .authContainer {
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--cream);
+    text-decoration: none;
+    margin-bottom: 40px;
+    justify-content: center;
+  }
+  
+  .logoIcon {
+    width: 36px;
+    height: 36px;
+    background: var(--flame);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
