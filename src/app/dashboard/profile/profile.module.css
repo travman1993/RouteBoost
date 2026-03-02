@@ -1,0 +1,468 @@
+.profilePage {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .pageTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+  
+  .editBtn {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--cream);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .editBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .saveBtn {
+    background: var(--flame);
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .saveBtn:hover {
+    box-shadow: 0 8px 25px rgba(255, 92, 0, 0.35);
+  }
+  
+  .saveBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .savedBanner {
+    background: rgba(0, 232, 157, 0.12);
+    color: var(--mint);
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    animation: fadeIn 0.3s ease both;
+  }
+  
+  /* COMPLETION */
+  .completionCard {
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .completionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .completionLabel {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--cream-dim);
+  }
+  
+  .completionPercent {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--flame);
+  }
+  
+  .completionBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  
+  .completionFill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+  
+  .completionHint {
+    font-size: 0.8rem;
+    color: var(--slate);
+    line-height: 1.4;
+  }
+  
+  /* SECTIONS */
+  .section {
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .sectionTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  
+  .sectionHint {
+    font-size: 0.82rem;
+    color: var(--slate);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  
+  /* FIELDS */
+  .field {
+    margin-bottom: 18px;
+  }
+  
+  .field:last-child {
+    margin-bottom: 0;
+  }
+  
+  .fieldLabel {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cream-dim);
+    margin-bottom: 6px;
+  }
+  
+  .fieldHint {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 400;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  
+  .fieldValue {
+    font-size: 0.95rem;
+    color: var(--cream);
+    padding: 10px 0;
+    line-height: 1.5;
+  }
+  
+  .fieldValueEmpty {
+    color: var(--slate);
+    font-style: italic;
+  }
+  
+  .fieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  /* CUISINE GRID */
+  .cuisineGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .cuisineChip {
+    background: var(--night);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .cuisineChip:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .cuisineChipActive {
+    border-color: var(--flame) !important;
+    background: var(--flame-dim) !important;
+  }
+  
+  /* VIBE CHIPS */
+  .vibeGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .vibeChip {
+    background: var(--night);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .vibeChip:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .vibeChipActive {
+    border-color: var(--flame) !important;
+    background: var(--flame-dim) !important;
+    color: var(--flame-light) !important;
+  }
+  
+  /* LOCATIONS */
+  .locationItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--night);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+  
+  .locationInfo {
+    flex: 1;
+  }
+  
+  .locationDay {
+    display: inline-block;
+    background: var(--flame-dim);
+    color: var(--flame-light);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-right: 8px;
+  }
+  
+  .locationName {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  
+  .locationAddress {
+    display: block;
+    color: var(--slate);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  .deleteBtn {
+    background: none;
+    border: none;
+    color: var(--slate);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  
+  .deleteBtn:hover {
+    color: var(--danger);
+  }
+  
+  .addLocationBtn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--night);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    color: var(--slate);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  
+  .addLocationBtn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--cream);
+  }
+  
+  .addLocationForm {
+    background: var(--night);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+  
+  .addLocationForm select {
+    width: 100%;
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B8FA3' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+  }
+  
+  .addLocationForm select:focus {
+    border-color: var(--flame);
+    box-shadow: 0 0 0 3px rgba(255, 92, 0, 0.12);
+    outline: none;
+  }
+  
+  .addLocationForm select option {
+    background: var(--night-card);
+    color: var(--cream);
+  }
+  
+  .addLocationActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .addLocationActions button {
+    flex: 1;
+  }
+  
+  /* SOCIAL INPUT ROW */
+  .socialField {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .socialIcon {
+    font-size: 20px;
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  .socialField input {
+    flex: 1;
+  }
+  
+  .socialValue {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+  
+  /* ACCOUNT */
+  .accountRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  
+  .accountRow:last-child {
+    border-bottom: none;
+  }
+  
+  .accountLabel {
+    font-size: 0.85rem;
+    color: var(--slate);
+  }
+  
+  .accountValue {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  
+  .planBadge {
+    display: inline-block;
+    background: rgba(0, 232, 157, 0.12);
+    color: var(--mint);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  
+  .logoutBtn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    background: rgba(255, 107, 107, 0.08);
+    border: 1px solid rgba(255, 107, 107, 0.15);
+    color: var(--danger);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    margin-bottom: 40px;
+  }
+  
+  .logoutBtn:hover {
+    background: rgba(255, 107, 107, 0.15);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @media (max-width: 480px) {
+    .profilePage {
+      padding: 20px 16px;
+    }
+  
+    .cuisineGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .fieldRow {
+      grid-template-columns: 1fr;
+    }
+  }
