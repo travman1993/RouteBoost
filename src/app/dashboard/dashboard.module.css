@@ -297,6 +297,50 @@
   color: var(--slate);
   margin-bottom: 2px;
 }
+/* ===== HOURLY FORECAST ===== */
+.forecastStrip {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.forecastStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.forecastItem {
+  flex: 1;
+  min-width: 64px;
+  background: var(--night-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.forecastTime {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate);
+}
+
+.forecastIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.forecastTemp {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
 
 /* ===== SECTION CARDS ===== */
 .sectionCard {

@@ -12,6 +12,13 @@ interface TodayLocation {
   day_of_week: string;
 }
 
+interface ForecastItem {
+  time: string;
+  temp: number;
+  icon: string;
+  condition: string;
+}
+
 interface Weather {
   temp: number | string;
   condition: string;
@@ -20,6 +27,7 @@ interface Weather {
   humidity: number;
   wind: number;
   feelsLike: number | string;
+  forecast: ForecastItem[];
 }
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -33,6 +41,37 @@ function getDemandLevel(day: string): { level: string; color: string } {
   return { level: 'Moderate', color: '#8B8FA3' };
 }
 
+function calculateStreak(dates: string[]): number {
+  if (dates.length === 0) return 0;
+
+  const sorted = Array.from(new Set(dates)).sort().reverse();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const mostRecent = new Date(sorted[0] + 'T00:00:00');
+
+  // Streak must include today or yesterday
+  if (mostRecent < yesterday) return 0;
+
+  let streak = 1;
+  for (let i = 1; i < sorted.length; i++) {
+    const current = new Date(sorted[i] + 'T00:00:00');
+    const previous = new Date(sorted[i - 1] + 'T00:00:00');
+    const diffDays = (previous.getTime() - current.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 1) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
 export default function TodayPage() {
   const [truckName, setTruckName] = useState('');
   const [todayLocation, setTodayLocation] = useState<TodayLocation | null>(null);
@@ -43,6 +82,8 @@ export default function TodayPage() {
   const [feedbackRating, setFeedbackRating] = useState('');
   const [feedbackNote, setFeedbackNote] = useState('');
   const [feedbackSaved, setFeedbackSaved] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [todayLogged, setTodayLogged] = useState(false);
 
   const supabase = createClient();
   const now = new Date();
@@ -59,7 +100,6 @@ export default function TodayPage() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        // Load truck profile
         const { data: truck } = await supabase
           .from('trucks')
           .select('name')
@@ -67,7 +107,6 @@ export default function TodayPage() {
           .single();
         if (truck) setTruckName(truck.name);
 
-        // Load today's location
         const { data: locations } = await supabase
           .from('locations')
           .select('*')
@@ -78,7 +117,6 @@ export default function TodayPage() {
           const loc = locations[0];
           setTodayLocation(loc);
 
-          // Fetch weather for this location
           try {
             const weatherRes = await fetch(`/api/weather?address=${encodeURIComponent(loc.address)}`);
             const weatherData = await weatherRes.json();
@@ -86,6 +124,22 @@ export default function TodayPage() {
           } catch (err) {
             console.error('Weather fetch error:', err);
           }
+        }
+
+        // Load streak data
+        const { data: feedback } = await supabase
+          .from('daily_feedback')
+          .select('date')
+          .eq('truck_id', user.id)
+          .order('date', { ascending: false })
+          .limit(60);
+
+        if (feedback && feedback.length > 0) {
+          const dates = feedback.map((f: any) => f.date);
+          setStreak(calculateStreak(dates));
+
+          const today = new Date().toISOString().split('T')[0];
+          setTodayLogged(dates.includes(today));
         }
       } catch (err) {
         console.error('Load error:', err);
@@ -117,6 +171,8 @@ export default function TodayPage() {
       });
 
       setFeedbackSaved(true);
+      setTodayLogged(true);
+      setStreak((prev) => prev + 1);
       setTimeout(() => {
         setShowFeedback(false);
         setFeedbackSaved(false);
@@ -158,7 +214,7 @@ export default function TodayPage() {
             <span className={styles.planMetaItem}>
               🔥 <span style={{ color: demand.color }}>{demand.level} Demand</span>
             </span>
-            {weather && weather.temp && weather.temp !== '--' && (
+            {weather && (
               <span className={styles.planMetaItem}>
                 {weather.temp}°F · {weather.condition}
               </span>
@@ -180,7 +236,7 @@ export default function TodayPage() {
       )}
 
       {/* WEATHER CARD */}
-      {weather && weather.temp !== '--' && (
+      {weather && (
         <div className={styles.weatherCard}>
           <div className={styles.weatherLeft}>
             <img
@@ -201,22 +257,41 @@ export default function TodayPage() {
         </div>
       )}
 
+      {/* HOURLY FORECAST */}
+      {weather && weather.forecast && weather.forecast.length > 0 && (
+        <div className={styles.forecastStrip}>
+          {weather.forecast.map((item, i) => (
+            <div key={i} className={styles.forecastItem}>
+              <div className={styles.forecastTime}>{item.time}</div>
+              <img
+                className={styles.forecastIcon}
+                src={`https://openweathermap.org/img/wn/${item.icon}.png`}
+                alt={item.condition}
+              />
+              <div className={styles.forecastTemp}>{item.temp}°</div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* QUICK STATS */}
       <div className={styles.quickStats}>
-        <div className={styles.statCard}>
+        <Link href="/dashboard/weekly-posts" className={styles.statCard} style={{ cursor: 'pointer', textDecoration: 'none' }}>
           <div className={styles.statIcon}>📅</div>
           <div className={styles.statValue}>{dayName.slice(0, 3)}</div>
-          <div className={styles.statLabel}>Today</div>
-        </div>
+          <div className={styles.statLabel}>Weekly Posts</div>
+        </Link>
         <div className={styles.statCard}>
           <div className={styles.statIcon}>🔥</div>
           <div className={styles.statValue} style={{ color: demand.color }}>{demand.level}</div>
           <div className={styles.statLabel}>Demand</div>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statIcon}>⭐</div>
-          <div className={styles.statValue}>--</div>
-          <div className={styles.statLabel}>Streak</div>
+          <div className={styles.statIcon}>{streak > 0 ? '🔥' : '⭐'}</div>
+          <div className={styles.statValue} style={{ color: streak >= 7 ? '#00E89D' : streak >= 3 ? '#FFB84D' : 'var(--cream)' }}>
+            {streak > 0 ? streak : todayLogged ? '1' : '0'}
+          </div>
+          <div className={styles.statLabel}>{streak === 1 ? 'Day' : 'Days'} Streak</div>
         </div>
       </div>
 
@@ -242,8 +317,8 @@ export default function TodayPage() {
       <div className={styles.sectionCard} onClick={() => setShowFeedback(true)}>
         <div className={`${styles.sectionIcon} ${styles.sectionIconFeedback}`}>📝</div>
         <div className={styles.sectionContent}>
-          <h3>End of Day</h3>
-          <p>How did today go? Rate your shift</p>
+          <h3>End of Day {todayLogged && <span className={`${styles.sectionTag} ${styles.tagReady}`}>Done ✓</span>}</h3>
+          <p>{todayLogged ? 'Feedback logged for today' : 'How did today go? Rate your shift'}</p>
         </div>
         <span className={styles.sectionArrow}>›</span>
       </div>
@@ -254,8 +329,11 @@ export default function TodayPage() {
           <div className={styles.feedbackCard} onClick={(e) => e.stopPropagation()}>
             {feedbackSaved ? (
               <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                <div style={{ fontSize: '48px', marginBottom: '12px' }}>✓</div>
-                <h3 className={styles.feedbackTitle} style={{ marginBottom: 0 }}>Feedback Saved!</h3>
+                <div style={{ fontSize: '48px', marginBottom: '12px' }}>🔥</div>
+                <h3 className={styles.feedbackTitle} style={{ marginBottom: 4 }}>Feedback Saved!</h3>
+                <p style={{ color: 'var(--slate)', fontSize: '0.9rem' }}>
+                  {streak > 0 ? `${streak} day streak! Keep it going!` : 'Great start! Come back tomorrow to build your streak.'}
+                </p>
               </div>
             ) : (
               <>

@@ -1,0 +1,374 @@
+.weeklyPage {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+  
+  .header {
+    margin-bottom: 24px;
+  }
+  
+  .pageTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  
+  .pageSubtitle {
+    color: var(--slate);
+    font-size: 0.9rem;
+  }
+  
+  /* SERVING PREVIEW */
+  .servingPreview {
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .servingLabel {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  
+  .servingDays {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .dayDot {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--night);
+    color: var(--slate);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  
+  .dayDotActive {
+    background: var(--flame-dim);
+    color: var(--flame-light);
+    border-color: rgba(255, 92, 0, 0.2);
+  }
+  
+  .noDays {
+    color: var(--slate);
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  /* GENERATE BUTTON */
+  .generateBtn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 50px;
+    background: var(--flame);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    margin-bottom: 20px;
+  }
+  
+  .generateBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 92, 0, 0.35);
+  }
+  
+  .generateBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* LOADING */
+  .loadingState {
+    text-align: center;
+    padding: 48px 20px;
+  }
+  
+  .loadingDots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--flame);
+    animation: bounce 1.2s infinite;
+  }
+  
+  .dot:nth-child(2) { animation-delay: 0.15s; }
+  .dot:nth-child(3) { animation-delay: 0.3s; }
+  
+  .loadingText {
+    color: var(--slate);
+    font-size: 0.9rem;
+  }
+  
+  /* STATS BAR */
+  .statsBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: var(--slate);
+    font-weight: 600;
+  }
+  
+  .saveAllBtn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0, 232, 157, 0.1);
+    border: 1px solid rgba(0, 232, 157, 0.2);
+    color: var(--mint);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+  }
+  
+  .saveAllBtn:hover {
+    background: rgba(0, 232, 157, 0.18);
+  }
+  
+  /* DAY SECTIONS */
+  .daySection {
+    background: var(--night-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  
+  .dayHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cream);
+    transition: background 0.2s;
+  }
+  
+  .dayHeader:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .dayInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .dayName {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  
+  .dayLocation {
+    font-size: 0.82rem;
+    color: var(--slate);
+  }
+  
+  .dayMeta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .dayPostCount {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--flame-light);
+    background: var(--flame-dim);
+    padding: 3px 10px;
+    border-radius: 50px;
+  }
+  
+  .dayArrow {
+    color: var(--slate);
+    font-size: 1rem;
+  }
+  
+  /* DAY POSTS */
+  .dayPosts {
+    padding: 0 16px 16px;
+    animation: fadeIn 0.3s ease both;
+  }
+  
+  .postCard {
+    background: var(--night);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .postSlot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--flame-light);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .postCaption {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--cream);
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+  }
+  
+  .postHashtags {
+    font-size: 0.85rem;
+    color: var(--flame-light);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  
+  .postActions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .postCopyBtn {
+    padding: 7px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .postCopyBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .postSaveBtn {
+    padding: 7px 16px;
+    border-radius: 8px;
+    background: rgba(0, 232, 157, 0.1);
+    border: 1px solid rgba(0, 232, 157, 0.2);
+    color: var(--mint);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .postSaveBtn:hover {
+    background: rgba(0, 232, 157, 0.18);
+  }
+  
+  .postSavedTag {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--mint);
+  }
+  
+  /* REGENERATE */
+  .regenerateBtn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .regenerateBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .regenerateBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .errorMsg {
+    background: var(--danger-dim);
+    color: var(--danger);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+  }
+  
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @media (max-width: 480px) {
+    .weeklyPage {
+      padding: 20px 16px;
+    }
+  
+    .servingDays {
+      gap: 4px;
+    }
+  
+    .dayDot {
+      font-size: 0.68rem;
+      padding: 6px 2px;
+    }
+  }
