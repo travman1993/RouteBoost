@@ -281,11 +281,11 @@ export default function TodayPage() {
           <div className={styles.statValue}>{dayName.slice(0, 3)}</div>
           <div className={styles.statLabel}>Weekly Posts</div>
         </Link>
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>🔥</div>
+        <Link href="/dashboard/scout" className={styles.statCard} style={{ cursor: 'pointer', textDecoration: 'none' }}>
+          <div className={styles.statIcon}>🗺️</div>
           <div className={styles.statValue} style={{ color: demand.color }}>{demand.level}</div>
-          <div className={styles.statLabel}>Demand</div>
-        </div>
+          <div className={styles.statLabel}>Scout Spots</div>
+        </Link>
         <div className={styles.statCard}>
           <div className={styles.statIcon}>{streak > 0 ? '🔥' : '⭐'}</div>
           <div className={styles.statValue} style={{ color: streak >= 7 ? '#00E89D' : streak >= 3 ? '#FFB84D' : 'var(--cream)' }}>
