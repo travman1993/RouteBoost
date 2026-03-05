@@ -62,9 +62,24 @@ export default function ProfilePage() {
   const supabase = createClient();
   const router = useRouter();
 
+  const [subStatus, setSubStatus] = useState('trial');
+  const [trialDays, setTrialDays] = useState<number | null>(null);
+  const [billingLoading, setBillingLoading] = useState(false);
+  const [billingSuccess, setBillingSuccess] = useState(false);
+
   useEffect(() => {
     loadProfile();
     loadLocations();
+    loadSubscription();
+
+    // Check for billing success redirect
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('billing') === 'success') {
+      setBillingSuccess(true);
+      setTimeout(() => setBillingSuccess(false), 5000);
+      // Clean URL
+      window.history.replaceState({}, '', '/dashboard/profile');
+    }
   }, []);
 
   async function loadProfile() {
@@ -160,6 +175,76 @@ export default function ProfilePage() {
   async function handleDeleteLocation(id: string) {
     await supabase.from('locations').delete().eq('id', id);
     loadLocations();
+  }
+
+  async function loadSubscription() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: truck } = await supabase
+      .from('trucks')
+      .select('subscription_status, trial_ends_at')
+      .eq('id', user.id)
+      .single();
+
+    if (truck) {
+      const status = truck.subscription_status || 'trial';
+      setSubStatus(status);
+
+      if (status === 'trial' && truck.trial_ends_at) {
+        const now = new Date();
+        const trialEnd = new Date(truck.trial_ends_at);
+        const days = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        setTrialDays(days > 0 ? days : 0);
+        if (days <= 0) setSubStatus('trial_expired');
+      }
+    }
+  }
+
+  async function handleSubscribe() {
+    setBillingLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const res = await fetch('/api/stripe/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, email: user.email }),
+      });
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+    } finally {
+      setBillingLoading(false);
+    }
+  }
+
+  async function handleManageBilling() {
+    setBillingLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const res = await fetch('/api/stripe/manage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id }),
+      });
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error('Billing portal error:', err);
+    } finally {
+      setBillingLoading(false);
+    }
   }
 
   const handleLogout = async () => {
@@ -553,9 +638,9 @@ export default function ProfilePage() {
         )}
       </div>
 
-      {/* ACCOUNT */}
+      {/* ACCOUNT & BILLING */}
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>⚙️ Account</h2>
+        <h2 className={styles.sectionTitle}>⚙️ Account & Billing</h2>
 
         <div className={styles.accountRow}>
           <span className={styles.accountLabel}>Email</span>
@@ -563,12 +648,44 @@ export default function ProfilePage() {
         </div>
         <div className={styles.accountRow}>
           <span className={styles.accountLabel}>Plan</span>
-          <span className={styles.planBadge}>Free Trial</span>
+          <span className={styles.planBadge}>
+            {subStatus === 'active' ? 'RouteBoost Pro' :
+             subStatus === 'trial' ? `Free Trial${trialDays !== null ? ` (${trialDays} days left)` : ''}` :
+             subStatus === 'trial_expired' ? 'Trial Expired' :
+             subStatus === 'past_due' ? 'Past Due' :
+             subStatus === 'canceled' ? 'Canceled' : 'Free Trial'}
+          </span>
         </div>
         <div className={styles.accountRow}>
           <span className={styles.accountLabel}>Price</span>
-          <span className={styles.accountValue}>$25/mo after trial</span>
+          <span className={styles.accountValue}>$25/mo</span>
         </div>
+
+        {(subStatus === 'trial' || subStatus === 'trial_expired' || subStatus === 'canceled' || subStatus === 'none') && (
+          <button
+            className={styles.upgradeBtn}
+            onClick={handleSubscribe}
+            disabled={billingLoading}
+          >
+            {billingLoading ? 'Loading...' : subStatus === 'trial' ? '🚀 Subscribe Now — 7-Day Free Trial' : '🚀 Subscribe — $25/mo'}
+          </button>
+        )}
+
+        {(subStatus === 'active' || subStatus === 'past_due') && (
+          <button
+            className={styles.manageBtn}
+            onClick={handleManageBilling}
+            disabled={billingLoading}
+          >
+            {billingLoading ? 'Loading...' : '⚙️ Manage Subscription'}
+          </button>
+        )}
+
+        {billingSuccess && (
+          <div className={styles.savedBanner} style={{ marginTop: '12px' }}>
+            ✓ Subscription activated! Welcome to RouteBoost Pro.
+          </div>
+        )}
       </div>
 
       <button className={styles.logoutBtn} onClick={handleLogout}>
