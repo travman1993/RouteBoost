@@ -1,0 +1,261 @@
+.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(13, 15, 20, 0.7);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  .navLogo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
+    color: var(--cream); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  
+  .logoIcon {
+    width: 32px; height: 32px; background: var(--flame); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  
+  .navBack {
+    color: var(--slate); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; transition: color 0.2s;
+  }
+  .navBack:hover { color: var(--cream); }
+  
+  .legalPage {
+    max-width: 740px; margin: 0 auto;
+    padding: 120px 24px 80px;
+  }
+  
+  .pageLabel {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--flame); margin-bottom: 16px;
+  }
+  
+  .legalPage h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+    line-height: 1.15; margin-bottom: 12px;
+  }
+  
+  .lastUpdated {
+    color: var(--slate); font-size: 0.9rem; margin-bottom: 48px;
+  }
+  
+  .legalPage h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 700;
+    margin-top: 48px; margin-bottom: 16px;
+    color: var(--cream);
+  }
+  
+  .legalPage p, .legalPage li {
+    color: var(--cream-dim); font-size: 1rem;
+    line-height: 1.75; margin-bottom: 16px;
+  }
+  
+  .legalPage ul { padding-left: 24px; margin-bottom: 16px; }
+  .legalPage li { margin-bottom: 8px; }
+  
+  .legalPage a {
+    color: var(--flame-light); text-decoration: none;
+    border-bottom: 1px solid rgba(255, 122, 46, 0.3);
+    transition: border-color 0.2s;
+  }
+  .legalPage a:hover { border-color: var(--flame-light); }
+  
+  .highlightBox {
+    background: var(--night-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid var(--flame);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 20px 24px; margin: 24px 0;
+  }
+  
+  .highlightBox p { margin-bottom: 0; color: var(--cream); }
+  
+  /* CONTACT SPECIFIC */
+  .contactPage {
+    max-width: 900px; margin: 0 auto;
+    padding: 120px 24px 80px;
+  }
+  
+  .contactHeader {
+    text-align: center; margin-bottom: 64px;
+  }
+  
+  .contactHeader h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  
+  .contactHeader p {
+    color: var(--slate); font-size: 1.1rem; max-width: 500px;
+    margin: 0 auto; line-height: 1.6;
+  }
+  
+  .contactGrid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 32px; align-items: start;
+  }
+  
+  .contactInfo { display: flex; flex-direction: column; gap: 16px; }
+  
+  .infoCard {
+    background: var(--night-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    transition: border-color 0.3s;
+  }
+  
+  .infoCard:hover { border-color: rgba(255, 92, 0, 0.15); }
+  
+  .infoIcon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  
+  .infoIconFlame { background: rgba(255, 92, 0, 0.12); }
+  .infoIconMint { background: rgba(0, 232, 157, 0.12); }
+  .infoIconPurple { background: rgba(155, 93, 229, 0.12); }
+  
+  .infoCard h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;
+  }
+  
+  .infoCard p { color: var(--slate); font-size: 0.93rem; line-height: 1.5; }
+  
+  .infoCard a {
+    color: var(--flame-light); text-decoration: none;
+    border-bottom: 1px solid rgba(255, 122, 46, 0.3);
+  }
+  
+  .formCard {
+    background: var(--night-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+  }
+  
+  .formCard h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 700; margin-bottom: 28px;
+  }
+  
+  .formRow {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  
+  .submitBtn {
+    background: var(--flame); color: #fff; border: none;
+    padding: 16px 36px; border-radius: 50px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 1.02rem;
+    cursor: pointer; transition: all 0.25s; width: 100%; margin-top: 8px;
+  }
+  
+  .submitBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 92, 0, 0.35);
+  }
+  
+  .successMsg {
+    text-align: center; padding: 40px 20px;
+  }
+  
+  .successIcon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(0, 232, 157, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin: 0 auto 20px;
+  }
+  
+  .successMsg h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; margin-bottom: 10px;
+  }
+  
+  .successMsg p { color: var(--slate); line-height: 1.6; }
+  
+  /* FAQ */
+  .faqSection {
+    max-width: 700px; margin: 80px auto 0;
+  }
+  
+  .faqSection h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem; font-weight: 800;
+    text-align: center; margin-bottom: 36px;
+  }
+  
+  .faqItem {
+    background: var(--night-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    margin-bottom: 12px; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  
+  .faqItem:hover { border-color: rgba(255,255,255,0.1); }
+  
+  .faqQuestion {
+    padding: 20px 24px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; font-size: 1rem; user-select: none;
+    background: none; border: none; color: var(--cream); width: 100;
+    text-align: left; font-family: 'DM Sans', sans-serif;
+  }
+  
+  .faqToggle {
+    font-size: 1.3rem; color: var(--slate);
+    transition: transform 0.3s; flex-shrink: 0; margin-left: 16px;
+  }
+  
+  .faqAnswer {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  
+  .faqAnswerOpen {
+    max-height: 300px;
+  }
+  
+  .faqAnswerInner {
+    padding: 0 24px 20px;
+    color: var(--slate); line-height: 1.65; font-size: 0.95rem;
+  }
+  
+  /* FOOTER */
+  .footer {
+    padding: 48px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center; margin-top: 80px;
+  }
+  
+  .footerLogo {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.2rem; color: var(--cream); margin-bottom: 12px;
+  }
+  
+  .footer p { color: var(--slate); font-size: 0.85rem; }
+  .footerLinks a { color: var(--slate); text-decoration: none; transition: color 0.2s; }
+  .footerLinks a:hover { color: var(--flame); }
+  
+  @media (max-width: 768px) {
+    .contactGrid { grid-template-columns: 1fr; }
+    .formRow { grid-template-columns: 1fr; }
+  }
+  
+  @media (max-width: 480px) {
+    .nav { padding: 14px 16px; }
+    .legalPage { padding: 100px 16px 60px; }
+    .contactPage { padding: 100px 16px 60px; }
+    .formCard { padding: 28px 20px; }
+  }
