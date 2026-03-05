@@ -1,254 +1,176 @@
-# RouteBoost
-AI marketing and location assistant for food trucks
-
 # 🔥 RouteBoost
 
-**The AI Growth Assistant for Food Trucks**
+**AI-Powered Growth Assistant for Mobile Food Businesses**
 
-RouteBoost is a mobile-first web application that helps food truck owners avoid slow days by automating marketing, improving location decisions, and surfacing event booking opportunities. It's the growth layer that sits on top of existing tools like Square and Toast — not a replacement, but the missing piece.
+RouteBoost helps food trucks, pop-ups, and catering businesses choose better locations, automate social media marketing, discover event bookings, and grow smarter with AI insights.
 
-> "One extra customer per day pays for the app."
-
----
-
-## 🧠 The Problem
-
-Food truck owners face the same challenges every day:
-
-- **Location guesswork** — parking decisions are based on gut feeling, not data
-- **Marketing fatigue** — daily social media posting is exhausting and inconsistent
-- **Slow days** — unpredictable turnout can cost hundreds in lost revenue
-- **Missed opportunities** — festivals, breweries, and private events go undiscovered
-- **No performance insight** — no clear picture of which locations, days, or strategies actually work
-
-Most food truck success still depends on guesswork. RouteBoost changes that.
+🌐 **Live at [routeboost.dev](https://routeboost.dev)**
 
 ---
 
-## ⭐ The Solution
+## Features
 
-RouteBoost acts as a daily AI-powered assistant that handles the growth side of running a food truck:
+**Today's Plan** — Daily command center with location confirmation, live weather with hourly forecast, demand predictions, and streak tracking.
 
-- **Daily Planner** — confirms today's location with demand predictions and weather
-- **Marketing Manager** — generates social media posts automatically (captions, hashtags, emojis, location tags)
-- **Booking Assistant** — surfaces nearby events and generates one-tap application messages
-- **Growth Advisor** — learns from daily feedback to deliver plain-language insights over time
+**AI Post Creator** — Generate Instagram, Facebook, TikTok, and Twitter posts instantly using your truck profile. Custom prompts, save to library, copy to clipboard. Rate limited to 10 posts/day.
 
----
+**Weekly Content Calendar** — Generate a full week of posts (Morning Hype, Midday Live, Evening Recap) for every serving day with one tap. Save all to your library.
 
-## 🧱 Core Systems
+**Events & Bookings** — AI scouts local festivals, breweries, markets, and corporate events. Generate booking pitches with one tap. Track status from interested → applied → booked.
 
-### 1. Location & Weekly Route System
-Owners set their regular weekly schedule (e.g., Monday → Office Park, Friday → Brewery). Each morning, the app presents a daily plan with demand expectations, weather outlook, and optional nearby alternatives.
+**AI Insights** — Business health score, weekly goals, and categorized advice based on your feedback history, locations, and activity data.
 
-### 2. AI Marketing Engine
-Based on the truck's profile and confirmed location, AI generates a ready-to-post social media caption. The owner adds a photo, taps post, and they're done. A content library saves everything for reuse.
+**Location Scout & Heat Map** — AI recommends the best parking spots based on traffic, weather, time of day, and your cuisine. Interactive map with organic heat cloud overlays showing demand intensity.
 
-### 3. Event & Booking Assistant
-RouteBoost surfaces local opportunities — festivals, brewery nights, markets, private bookings — and generates professional application messages. One tap to apply.
+**Profile Management** — Truck identity, cuisine, signature dishes, vibe & brand, social media links, weekly location management, and profile completion meter.
 
-### 4. End-of-Day Feedback System
-After closing, the owner rates their day (Great / Normal / Slow) with optional notes on crowd level, weather, and other factors. This feedback trains the AI to make better predictions over time.
-
-### 5. AI Insight Engine
-Instead of dashboards and charts, RouteBoost delivers insights in plain language:
-- *"Waterfront performs best on Tuesdays."*
-- *"Rain reduces your downtown traffic by ~30%."*
-- *"Posts before 10 AM get more engagement."*
+**Stripe Billing** — $25/month subscription with 7-day free trial. Customer portal for managing billing.
 
 ---
 
-## 🔁 Daily User Experience
+## Tech Stack
 
-| Time | Action |
-|------|--------|
-| **Morning** | Open app → see Daily Plan → confirm location |
-| **Before Opening** | AI post is ready → add photo → share |
-| **During Day** | Optional nudges (nearby events, suggestions) |
-| **After Closing** | Quick feedback check-out (one tap) |
-| **Evening** | Event opportunities and weekly insights appear |
-
-The goal is to create a **daily habit loop** — a ritual that takes minutes but compounds into real growth.
-
----
-
-## 📱 Core Screens
-
-| Screen | Purpose |
-|--------|---------|
-| **Today's Plan** ⭐ | Daily command center — location, weather, demand, post status |
-| **Post Creator** | Generate, edit, and share AI-written social posts |
-| **Events** | Browse and apply to nearby booking opportunities |
-| **Insights** | AI-generated performance summaries in plain language |
-| **Profile** | Truck info, weekly locations, subscription management |
-
-Navigation is a simple bottom bar. No complex menus, no spreadsheets, no dense dashboards.
+- **Framework:** Next.js 14 (App Router, TypeScript)
+- **Auth & Database:** Supabase (Auth + PostgreSQL + RLS)
+- **AI:** OpenAI GPT-4o-mini
+- **Payments:** Stripe (Checkout, Customer Portal, Webhooks)
+- **Weather:** OpenWeatherMap API
+- **Geocoding:** Google Maps Geocoding API
+- **Maps:** Leaflet + React-Leaflet
+- **Deployment:** Vercel
+- **Domain:** routeboost.dev
 
 ---
 
-## 🏗️ Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | HTML, CSS, JavaScript (mobile-first responsive) |
-| **Backend** | *TBD — Node.js / Python planned* |
-| **AI** | *TBD — OpenAI API / Anthropic API for content generation and insights* |
-| **Database** | *TBD — PostgreSQL / Supabase planned* |
-| **Hosting** | *TBD — Vercel / Railway planned* |
-| **Auth** | *TBD — Email/password with verification* |
-
-> Tech decisions will be finalized as development progresses from landing page to full MVP.
-
----
-
-## 🚀 Development Phases
-
-### ✅ Phase 0 — Landing Page *(current)*
-- Marketing website with product positioning
-- Hero, stats, features, pricing, CTA
-- Mobile-responsive design
-
-### 🔜 Phase 1 — MVP
-- Truck profile and onboarding
-- Weekly location setup
-- Daily check-in flow
-- AI post generator
-- Event opportunity list
-- End-of-day feedback
-- Auth (sign up, login, email verification)
-
-### 🔜 Phase 2 — Intelligence
-- Posting time suggestions
-- Weekly performance summaries
-- Smarter location recommendations
-
-### 🔜 Phase 3 — Expansion
-- Basic heat maps
-- Booking automation and saved applications
-- Advanced AI insights
-
-### 🔮 Phase 4 — Advanced Platform
-- Customer follow system
-- Live demand maps
-- Event organizer marketplace
-- Automated posting (direct social integrations)
-
----
-
-## 💰 Pricing Model
-
-| | |
-|---|---|
-| **Free Trial** | 7 days, no credit card required |
-| **Subscription** | $25/month |
-| **Cancel** | Anytime |
-
-**Future tier (planned):** Pro Plan at ~$39/month with automation, advanced insights, and unlimited AI generations.
-
----
-
-## 📊 Business Projections
-
-| Users | Monthly Revenue |
-|-------|----------------|
-| 100 | $2,500 |
-| 400 | $10,000 |
-| 1,000 | $25,000 |
-
-Estimated AI cost: ~$1/user/month. AI runs only when triggered by user actions — no continuous chat, healthy margins.
-
----
-
-## 🧠 Competitive Advantage
-
-RouteBoost is **not** a POS system. It doesn't compete with Square, Toast, or Clover.
-
-It occupies a new category: **Food Truck Growth OS.**
-
-- Competitors manage *sales*
-- RouteBoost creates *customers*
-
-As usage grows, the data becomes a moat — better predictions, unique heat maps, and increasing switching costs.
-
----
-
-## 🎯 Design Philosophy
-
-The app should feel like a **business assistant**, not enterprise software.
-
-**Prioritize:**
-- Clarity and speed
-- Large tap targets
-- Minimal typing
-- One-handed mobile use
-- Fast loading
-
-**Avoid:**
-- Complex dashboards
-- Heavy forms
-- Dense data tables
-- Spreadsheet-like interfaces
-
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```
-routeboost/
-├── index.html          # Landing page
-├── README.md           # This file
-├── assets/             # Images, icons, fonts (future)
-├── css/                # Stylesheets (future)
-├── js/                 # Scripts (future)
-└── app/                # Application screens (future)
+src/
+├── app/
+│   ├── page.tsx                    # Landing page
+│   ├── landing.module.css          # Landing styles
+│   ├── legal.module.css            # Shared legal page styles
+│   ├── layout.tsx                  # Root layout
+│   ├── privacy/page.tsx            # Privacy policy
+│   ├── terms/page.tsx              # Terms of service
+│   ├── contact/page.tsx            # Contact page with FAQ
+│   ├── auth/
+│   │   ├── login/                  # Login page
+│   │   ├── signup/                 # Signup page
+│   │   ├── verify/                 # Email verification
+│   │   └── callback/               # Auth callback handler
+│   ├── onboarding/                 # 3-step onboarding flow
+│   ├── dashboard/
+│   │   ├── page.tsx                # Today's Plan (main dashboard)
+│   │   ├── layout.tsx              # Bottom nav shell
+│   │   ├── posts/                  # AI Post Creator
+│   │   ├── weekly-posts/           # Weekly Content Calendar
+│   │   ├── events/                 # Events & Bookings
+│   │   ├── insights/               # AI Insights
+│   │   ├── scout/                  # Location Scout & Heat Map
+│   │   └── profile/                # Profile management & billing
+│   └── api/
+│       ├── weather/                # Weather API proxy
+│       ├── generate-post/          # AI post generation
+│       ├── generate-weekly-posts/  # Weekly calendar generation
+│       ├── generate-events/        # AI event scouting
+│       ├── generate-pitch/         # AI booking pitch
+│       ├── generate-insights/      # AI business insights
+│       ├── generate-locations/     # Location scout with geocoding
+│       └── stripe/
+│           ├── create-checkout/    # Stripe checkout session
+│           ├── manage/             # Stripe customer portal
+│           └── webhook/            # Stripe webhook handler
+├── lib/
+│   ├── supabase-browser.ts         # Client-side Supabase
+│   ├── supabase-server.ts          # Server-side Supabase
+│   ├── supabase-middleware.ts       # Auth middleware
+│   └── check-subscription.ts       # Subscription status checker
+├── styles/
+│   └── globals.css                 # Global styles & design system
+└── middleware.ts                    # Route protection
 ```
 
 ---
 
-## 🛠️ Local Development
+## Database Schema
 
-Right now, RouteBoost is a static landing page. To run locally:
+**trucks** — User profiles (name, cuisine, description, signature dishes, vibe, social links, subscription status, Stripe IDs)
+
+**locations** — Weekly serving locations (day, name, address, linked to truck)
+
+**daily_feedback** — End-of-day ratings (great/normal/slow) with optional notes
+
+**posts** — Saved AI-generated social media posts with platform, hashtags, scheduled dates
+
+**events** — Saved event opportunities with status tracking (interested/applied/booked)
+
+**ai_usage** — Daily AI generation tracking for rate limiting
+
+---
+
+## Environment Variables
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+# OpenAI
+OPENAI_API_KEY=
+
+# Weather
+WEATHER_API_KEY=
+
+# Google Maps
+GOOGLE_MAPS_API_KEY=
+
+# Stripe
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_PRICE_ID=
+STRIPE_WEBHOOK_SECRET=
+```
+
+---
+
+## Getting Started
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/routeboost.git
-cd routeboost
+git clone https://github.com/your-username/RouteBoost.git
+cd RouteBoost
 
-# Open in browser
-open index.html
-# or use a local server
-npx serve .
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Fill in your API keys
+
+# Run the development server
+npm run dev
 ```
 
----
-
-## 📣 Build in Public
-
-RouteBoost is being built in public. Follow along for:
-
-- Weekly progress updates
-- Feature previews
-- Roadmap milestones
-- Lessons learned
-
-**Roadmap status:**
-- ✅ Product vision & architecture
-- ✅ Landing page
-- 🔜 Auth & onboarding
-- 🔜 Daily plan screen
-- 🔜 AI post generator
-- 🔜 Event discovery
-- 🔜 Feedback system
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
 ---
 
-## 📄 License
+## Design System
 
-*TBD*
+- **Primary:** `#FF5C00` (Flame)
+- **Background:** `#0D0F14` (Night)
+- **Cards:** `#1C1F2B` (Night Card)
+- **Text:** `#FFF8F0` (Cream)
+- **Accent:** `#00E89D` (Mint)
+- **Muted:** `#8B8FA3` (Slate)
+- **Display Font:** Syne (800 weight)
+- **Body Font:** DM Sans
 
 ---
 
-<p align="center">
-  <strong>🔥 RouteBoost</strong><br>
-  <em>Stop guessing. Start growing.</em>
-</p>
+## License
+
+Proprietary. All rights reserved.
+
+© 2026 RouteBoost
