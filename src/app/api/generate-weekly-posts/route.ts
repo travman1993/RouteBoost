@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { checkSubscriptionServer } from '@/lib/check-subscription-server';
 
 interface ServingDay {
   day: string;
@@ -17,7 +18,20 @@ export async function POST(request: Request) {
     priceRange,
     instagram,
     servingDays,
+    userId,
   } = body;
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const isActive = await checkSubscriptionServer(userId);
+  if (!isActive) {
+    return NextResponse.json({
+      error: 'Your trial has expired. Subscribe to continue generating weekly posts.',
+      subscriptionRequired: true,
+    }, { status: 403 });
+  }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {

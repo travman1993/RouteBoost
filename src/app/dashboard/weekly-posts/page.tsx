@@ -34,6 +34,7 @@ export default function WeeklyPostsPage() {
   const [copiedId, setCopiedId] = useState('');
   const [savedId, setSavedId] = useState('');
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [userId, setUserId] = useState('');
 
   const supabase = createClient();
 
@@ -44,12 +45,14 @@ export default function WeeklyPostsPage() {
   async function loadData() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+    setUserId(user.id);
 
-    const { data: truck } = await supabase
+    const { data: truck, error: truckError } = await supabase
       .from('trucks')
       .select('*')
       .eq('id', user.id)
       .single();
+    if (truckError) console.error('Could not load truck profile:', truckError.message);
     if (truck) setTruckData(truck);
 
     const { data: locations } = await supabase
@@ -87,6 +90,7 @@ export default function WeeklyPostsPage() {
           vibe: truckData?.vibe,
           priceRange: truckData?.price_range,
           instagram: truckData?.instagram,
+          userId,
           servingDays: servingDays.map((l) => ({
             day: l.day_of_week,
             location: l.name,
@@ -211,6 +215,12 @@ export default function WeeklyPostsPage() {
           AI generates posts for every serving day
         </p>
       </div>
+
+      {truckData && (!truckData.name || !truckData.cuisine_type) && (
+        <div style={{ background: 'rgba(255,184,77,0.12)', border: '1px solid rgba(255,184,77,0.3)', borderRadius: '12px', padding: '12px 16px', marginBottom: '16px', fontSize: '0.88rem', color: 'var(--cream)' }}>
+          ⚠️ Your profile is incomplete — add your truck name and cuisine for better AI results. <a href="/dashboard/profile" style={{ color: 'var(--flame)', fontWeight: 600 }}>Complete Profile →</a>
+        </div>
+      )}
 
       {/* SERVING DAYS PREVIEW */}
       <div className={styles.servingPreview}>

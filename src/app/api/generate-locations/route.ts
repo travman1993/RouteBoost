@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { checkSubscriptionServer } from '@/lib/check-subscription-server';
 
 async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -24,6 +25,18 @@ async function geocodeAddress(address: string): Promise<{ lat: number; lng: numb
 export async function POST(request: Request) {
   const body = await request.json();
   const { userId, truckName, cuisine, vibe, signatureDishes, priceRange, currentAddress } = body;
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const isActive = await checkSubscriptionServer(userId);
+  if (!isActive) {
+    return NextResponse.json({
+      error: 'Your trial has expired. Subscribe to continue using Location Scout.',
+      subscriptionRequired: true,
+    }, { status: 403 });
+  }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   const weatherKey = process.env.WEATHER_API_KEY;
@@ -211,6 +224,12 @@ Find 5 REAL locations with REAL street addresses near this area. The addresses m
 
       // Filter out any that completely failed to geocode
       parsed.recommendations = geocoded.filter((s: any) => s.lat !== 0 && s.lng !== 0);
+
+      if (parsed.recommendations.length === 0) {
+        return NextResponse.json({
+          error: 'Could not map locations for this address. Try a more specific address in your profile (include city and state).',
+        }, { status: 422 });
+      }
     }
 
     return NextResponse.json(parsed);

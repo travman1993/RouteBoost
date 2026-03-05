@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { checkSubscriptionServer } from '@/lib/check-subscription-server';
 
 const DAILY_POST_LIMIT = 10;
 
@@ -20,6 +21,18 @@ export async function POST(request: Request) {
     customPrompt,
     userId,
   } = body;
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const isActive = await checkSubscriptionServer(userId);
+  if (!isActive) {
+    return NextResponse.json({
+      error: 'Your trial has expired. Subscribe to continue generating posts.',
+      subscriptionRequired: true,
+    }, { status: 403 });
+  }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {

@@ -65,11 +65,12 @@ export default function ScoutPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { data: truck } = await supabase
+    const { data: truck, error: truckError } = await supabase
       .from('trucks')
       .select('*')
       .eq('id', user.id)
       .single();
+    if (truckError) console.error('Could not load truck profile:', truckError.message);
     if (truck) setTruckData(truck);
 
     const { data: locations } = await supabase
@@ -134,6 +135,12 @@ export default function ScoutPage() {
         <h1 className={styles.pageTitle}>Location Scout</h1>
         <p className={styles.pageSubtitle}>AI maps demand hotspots in your area</p>
       </div>
+
+      {truckData && (!truckData.name || !truckData.cuisine_type) && (
+        <div style={{ background: 'rgba(255,184,77,0.12)', border: '1px solid rgba(255,184,77,0.3)', borderRadius: '12px', padding: '12px 16px', marginBottom: '16px', fontSize: '0.88rem', color: 'var(--cream)' }}>
+          ⚠️ Your profile is incomplete — add your truck name and cuisine for better AI results. <a href="/dashboard/profile" style={{ color: 'var(--flame)', fontWeight: 600 }}>Complete Profile →</a>
+        </div>
+      )}
 
       {/* GENERATE */}
       {!scoutData && !loading && (

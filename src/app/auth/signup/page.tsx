@@ -36,6 +36,7 @@ export default function SignUpPage() {
 
       // 2. Create truck profile in database
       if (authData.user) {
+        const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
         const { error: profileError } = await supabase
           .from('trucks')
           .insert({
@@ -43,6 +44,8 @@ export default function SignUpPage() {
             name: truckName,
             email: email,
             onboarding_complete: false,
+            subscription_status: 'trial',
+            trial_ends_at: trialEndsAt,
           });
 
         if (profileError) {

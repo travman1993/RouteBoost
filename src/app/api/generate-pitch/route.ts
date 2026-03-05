@@ -1,8 +1,21 @@
 import { NextResponse } from 'next/server';
+import { checkSubscriptionServer } from '@/lib/check-subscription-server';
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { truckName, cuisine, description, signatureDishes, vibe, eventTitle, eventDescription, eventLocation } = body;
+  const { truckName, cuisine, description, signatureDishes, vibe, eventTitle, eventDescription, eventLocation, userId } = body;
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const isActive = await checkSubscriptionServer(userId);
+  if (!isActive) {
+    return NextResponse.json({
+      error: 'Your trial has expired. Subscribe to continue generating pitches.',
+      subscriptionRequired: true,
+    }, { status: 403 });
+  }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {

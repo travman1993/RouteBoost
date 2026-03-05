@@ -54,6 +54,7 @@ export default function EventsPage() {
   const [currentPitch, setCurrentPitch] = useState('');
   const [currentPitchEvent, setCurrentPitchEvent] = useState('');
   const [copiedPitch, setCopiedPitch] = useState(false);
+  const [userId, setUserId] = useState('');
 
   const supabase = createClient();
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -67,12 +68,14 @@ export default function EventsPage() {
   async function loadTruckData() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+    setUserId(user.id);
 
-    const { data: truck } = await supabase
+    const { data: truck, error: truckError } = await supabase
       .from('trucks')
       .select('*')
       .eq('id', user.id)
       .single();
+    if (truckError) console.error('Could not load truck profile:', truckError.message);
     if (truck) setTruckData(truck);
 
     const { data: locations } = await supabase
@@ -112,6 +115,7 @@ export default function EventsPage() {
           cuisine: truckData?.cuisine_type,
           vibe: truckData?.vibe,
           locationAddress: todayLocation?.address || '',
+          userId,
         }),
       });
 
@@ -169,6 +173,7 @@ export default function EventsPage() {
           eventTitle: event.title,
           eventDescription: event.description,
           eventLocation: event.location,
+          userId,
         }),
       });
 
@@ -215,6 +220,12 @@ export default function EventsPage() {
         <h1 className={styles.pageTitle}>Events & Bookings</h1>
         <p className={styles.pageSubtitle}>AI finds opportunities that match your truck</p>
       </div>
+
+      {truckData && (!truckData.name || !truckData.cuisine_type) && (
+        <div style={{ background: 'rgba(255,184,77,0.12)', border: '1px solid rgba(255,184,77,0.3)', borderRadius: '12px', padding: '12px 16px', marginBottom: '16px', fontSize: '0.88rem', color: 'var(--cream)' }}>
+          ⚠️ Your profile is incomplete — add your truck name and cuisine for better AI results. <a href="/dashboard/profile" style={{ color: 'var(--flame)', fontWeight: 600 }}>Complete Profile →</a>
+        </div>
+      )}
 
       {/* TABS */}
       <div className={styles.tabs}>

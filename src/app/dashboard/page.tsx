@@ -100,11 +100,12 @@ export default function TodayPage() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        const { data: truck } = await supabase
+        const { data: truck, error: truckError } = await supabase
           .from('trucks')
           .select('name')
           .eq('id', user.id)
           .single();
+        if (truckError) console.error('Could not load truck profile:', truckError.message);
         if (truck) setTruckName(truck.name);
 
         const { data: locations } = await supabase

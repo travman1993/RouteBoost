@@ -42,11 +42,12 @@ export default function InsightsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { data: truck } = await supabase
+    const { data: truck, error: truckError } = await supabase
       .from('trucks')
       .select('*')
       .eq('id', user.id)
       .single();
+    if (truckError) console.error('Could not load truck profile:', truckError.message);
     if (truck) setTruckData(truck);
 
     const { count: feedbackCount } = await supabase
@@ -125,6 +126,12 @@ export default function InsightsPage() {
         <h1 className={styles.pageTitle}>AI Insights</h1>
         <p className={styles.pageSubtitle}>Your AI growth coach analyzes your data</p>
       </div>
+
+      {truckData && (!truckData.name || !truckData.cuisine_type) && (
+        <div style={{ background: 'rgba(255,184,77,0.12)', border: '1px solid rgba(255,184,77,0.3)', borderRadius: '12px', padding: '12px 16px', marginBottom: '16px', fontSize: '0.88rem', color: 'var(--cream)' }}>
+          ⚠️ Your profile is incomplete — add your truck name and cuisine for better AI results. <a href="/dashboard/profile" style={{ color: 'var(--flame)', fontWeight: 600 }}>Complete Profile →</a>
+        </div>
+      )}
 
       {/* ACTIVITY STATS */}
       <div className={styles.statsRow}>

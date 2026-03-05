@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   // Check if user already has a Stripe customer
   const { data: truck } = await supabase
     .from('trucks')
-    .select('stripe_customer_id')
+    .select('stripe_customer_id, trial_ends_at')
     .eq('id', userId)
     .single();
 
@@ -41,7 +41,9 @@ export async function POST(request: Request) {
       .eq('id', userId);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  // Only apply trial if the user has never had one (trial_ends_at not set)
+  const isFirstTime = !truck?.trial_ends_at;
+  const sessionParams: Stripe.Checkout.SessionCreateParams = {
     customer: customerId,
     payment_method_types: ['card'],
     line_items: [
@@ -51,13 +53,15 @@ export async function POST(request: Request) {
       },
     ],
     mode: 'subscription',
-    subscription_data: {
-      trial_period_days: 7,
-    },
     success_url: `${request.headers.get('origin')}/dashboard/profile?billing=success`,
     cancel_url: `${request.headers.get('origin')}/dashboard/profile?billing=cancel`,
     metadata: { userId },
-  });
+  };
+  if (isFirstTime) {
+    sessionParams.subscription_data = { trial_period_days: 7 };
+  }
+
+  const session = await stripe.checkout.sessions.create(sessionParams);
 
   return NextResponse.json({ url: session.url });
 }

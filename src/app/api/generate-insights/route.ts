@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { checkSubscriptionServer } from '@/lib/check-subscription-server';
 
 export async function POST(request: Request) {
   const body = await request.json();
   const { userId, truckName, cuisine, vibe, signatureDishes } = body;
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+
+  const isActive = await checkSubscriptionServer(userId);
+  if (!isActive) {
+    return NextResponse.json({
+      error: 'Your trial has expired. Subscribe to continue using AI Insights.',
+      subscriptionRequired: true,
+    }, { status: 403 });
+  }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {

@@ -14,12 +14,13 @@ export async function POST(request: Request) {
 
   let event: Stripe.Event;
 
+  if (!webhookSecret || !signature) {
+    console.error('Webhook secret or signature missing');
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 400 });
+  }
+
   try {
-    if (webhookSecret && signature) {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } else {
-      event = JSON.parse(body) as Stripe.Event;
-    }
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err);
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
   switch (event.type) {
