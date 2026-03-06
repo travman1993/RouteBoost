@@ -215,7 +215,7 @@ export default function TodayPage() {
             <span className={styles.planMetaItem}>
               🔥 <span style={{ color: demand.color }}>{demand.level} Demand</span>
             </span>
-            {weather && (
+            {weather && weather.temp !== '--' && (
               <span className={styles.planMetaItem}>
                 {weather.temp}°F · {weather.condition}
               </span>
@@ -225,7 +225,7 @@ export default function TodayPage() {
             className={`${styles.confirmBtn} ${confirmed ? styles.confirmedBtn : ''}`}
             onClick={handleConfirm}
           >
-            {confirmed ? '✓ Location Confirmed' : 'Confirm Location'}
+            {confirmed ? '✓ Location Confirmed' : "Confirm Today's Spot"}
           </button>
         </div>
       ) : (
@@ -237,7 +237,7 @@ export default function TodayPage() {
       )}
 
       {/* WEATHER CARD */}
-      {weather && (
+      {weather && weather.temp !== '--' && (
         <div className={styles.weatherCard}>
           <div className={styles.weatherLeft}>
             <img
@@ -259,7 +259,7 @@ export default function TodayPage() {
       )}
 
       {/* HOURLY FORECAST */}
-      {weather && weather.forecast && weather.forecast.length > 0 && (
+      {weather && weather.temp !== '--' && weather.forecast && weather.forecast.length > 0 && (
         <div className={styles.forecastStrip}>
           {weather.forecast.map((item, i) => (
             <div key={i} className={styles.forecastItem}>

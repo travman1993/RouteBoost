@@ -24,7 +24,7 @@ async function geocodeAddress(address: string): Promise<{ lat: number; lng: numb
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { userId, truckName, cuisine, vibe, signatureDishes, priceRange, currentAddress } = body;
+  const { userId, truckName, businessType, cuisine, vibe, signatureDishes, priceRange, currentAddress } = body;
 
   if (!userId) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
@@ -88,9 +88,9 @@ export async function POST(request: Request) {
     }
   }
 
-  const systemPrompt = `You are a location strategist for food trucks with deep knowledge of real-world businesses, traffic patterns, and commercial areas.
+  const systemPrompt = `You are a location strategist for mobile food businesses (food trucks, pop-ups, carts, and caterers) with deep knowledge of real-world businesses, traffic patterns, and commercial areas.
 
-Your job is to recommend the top 5 spots for a food truck to park TODAY based on real locations in the given area.
+Your job is to recommend the top 5 spots for a mobile food business to set up TODAY based on real locations in the given area.
 
 IMPORTANT LOCATION TYPES TO CONSIDER:
 - Superstore parking lots (Walmart, Target, Costco, Home Depot, Lowe's)
@@ -131,9 +131,10 @@ Return ONLY a JSON object, no markdown, no backticks:
 
 Generate exactly 5 recommendations sorted by score (highest first). At least one should be a superstore/big box retail location.`;
 
-  const userPrompt = `Recommend the 5 best food truck parking spots RIGHT NOW:
+  const userPrompt = `Recommend the 5 best spots RIGHT NOW for this mobile food business:
 
-Truck: ${truckName || 'Food Truck'}
+Business Name: ${truckName || 'Food Business'}
+Business Type: ${businessType || 'Food Truck'}
 Cuisine: ${cuisine || 'Not specified'}
 Vibe: ${vibe || 'Casual'}
 Signature Dishes: ${signatureDishes || 'Not specified'}

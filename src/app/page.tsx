@@ -58,8 +58,13 @@ export default function LandingPage() {
             <p>Scout high-traffic areas, find event opportunities, and build a following that shows up wherever you go.</p>
           </div>
           <div className={styles.whoCard}>
+            <span className={styles.whoEmoji}>🍧</span>
+            <h3>Street Vendors & Carts</h3>
+            <p>Find the highest-foot-traffic corners and markets. AI tells you where the crowds are so you never waste a setup.</p>
+          </div>
+          <div className={styles.whoCard}>
             <span className={styles.whoEmoji}>🍽️</span>
-            <h3>Catering Businesses</h3>
+            <h3>Mobile Catering</h3>
             <p>Discover corporate events, private parties, and festivals. AI writes your booking pitch so you get hired faster.</p>
           </div>
         </div>
@@ -70,7 +75,7 @@ export default function LandingPage() {
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
             <div className={styles.statNumber}>60%</div>
-            <p>of food truck revenue depends on choosing the right location</p>
+            <p>of mobile food revenue depends on choosing the right location</p>
           </div>
           <div className={styles.statCard}>
             <div className={styles.statNumber}>$300+</div>
@@ -82,7 +87,7 @@ export default function LandingPage() {
           </div>
           <div className={styles.statCard}>
             <div className={styles.statNumber}>73%</div>
-            <p>of customers find food trucks through social media posts</p>
+            <p>of customers find mobile food vendors through social media posts</p>
           </div>
         </div>
       </section>
@@ -90,7 +95,7 @@ export default function LandingPage() {
       {/* PROBLEM / SOLUTION */}
       <section className={styles.problemSolution}>
         <div className={styles.sectionLabel}>The Problem</div>
-        <h2 className={styles.sectionTitle}>Running a truck is hard.<br />Growing it shouldn&apos;t be.</h2>
+        <h2 className={styles.sectionTitle}>Running a mobile food business is hard.<br />Growing it shouldn&apos;t be.</h2>
         <div className={styles.psGrid}>
           <div className={`${styles.psColumn} ${styles.psProblem}`}>
             <h3 className={styles.psColumnTitle}>❌ Without RouteBoost</h3>

@@ -11,6 +11,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const {
     truckName,
+    businessType,
     cuisine,
     description,
     signatureDishes,
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'No serving days provided' }, { status: 400 });
   }
 
-  const systemPrompt = `You are a social media content strategist for food trucks. You create a full week of social media posts — 3 posts per serving day with different time slots and purposes.
+  const systemPrompt = `You are a social media content strategist for mobile food businesses (food trucks, pop-ups, carts, and caterers). You create a full week of social media posts — 3 posts per serving day with different time slots and purposes.
 
 For each serving day, generate exactly 3 posts:
 1. "Morning Hype" — posted early morning to build anticipation. Tease the menu, share location, get people excited.
@@ -65,9 +66,10 @@ IMPORTANT: Return ONLY a JSON array with this exact format, no markdown, no back
     .map((d) => `${d.day}: ${d.location} (${d.address})`)
     .join('\n');
 
-  const userPrompt = `Create a full week of social media posts for this food truck:
+  const userPrompt = `Create a full week of social media posts for this mobile food business:
 
-Truck: ${truckName || 'Food Truck'}
+Business Name: ${truckName || 'Food Business'}
+Business Type: ${businessType || 'Food Truck'}
 Cuisine: ${cuisine || 'Not specified'}
 Description: ${description || 'Not provided'}
 Signature Dishes: ${signatureDishes || 'Not specified'}
@@ -107,13 +109,19 @@ Generate 3 posts per day (Morning Hype, Midday Live, Evening Recap) for each ser
     const rawContent = data.choices[0].message.content.trim();
 
     try {
-      const parsed = JSON.parse(rawContent.replace(/```json|```/g, '').trim());
+      // Strip markdown code fences
+      let cleaned = rawContent.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      // Extract the JSON array if there's surrounding text
+      const arrayMatch = cleaned.match(/\[[\s\S]*\]/);
+      if (arrayMatch) cleaned = arrayMatch[0];
+      const parsed = JSON.parse(cleaned);
       const withSavedFlag = parsed.map((day: any) => ({
         ...day,
         posts: day.posts.map((p: any) => ({ ...p, saved: false })),
       }));
       return NextResponse.json({ weeklyPosts: withSavedFlag });
     } catch {
+      console.error('Weekly posts parse error. Raw content:', rawContent.slice(0, 500));
       return NextResponse.json({ error: 'Failed to parse weekly posts' }, { status: 500 });
     }
   } catch (error) {

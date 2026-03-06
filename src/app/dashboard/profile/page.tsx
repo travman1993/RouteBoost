@@ -20,6 +20,13 @@ const CUISINE_OPTIONS = [
   { id: 'other', label: 'Other', emoji: '🍽️' },
 ];
 
+const BUSINESS_TYPE_OPTIONS = [
+  { id: 'food_truck', label: 'Food Truck', emoji: '🚚' },
+  { id: 'pop_up', label: 'Pop-Up', emoji: '🏪' },
+  { id: 'cart_vendor', label: 'Cart / Street Vendor', emoji: '🍧' },
+  { id: 'catering', label: 'Mobile Catering', emoji: '🍽️' },
+];
+
 const VIBE_OPTIONS = [
   'Family Friendly', 'Late Night', 'Lunch Rush', 'Festival Style',
   'Craft & Artisan', 'Quick & Casual', 'Gourmet', 'Comfort Food',
@@ -38,6 +45,7 @@ interface Location {
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
     name: '',
+    business_type: '',
     cuisine_type: '',
     description: '',
     signature_dishes: '',
@@ -96,6 +104,7 @@ export default function ProfilePage() {
     if (truck) {
       setProfile({
         name: truck.name || '',
+        business_type: truck.business_type || '',
         cuisine_type: truck.cuisine_type || '',
         description: truck.description || '',
         signature_dishes: truck.signature_dishes || '',
@@ -134,6 +143,7 @@ export default function ProfilePage() {
       .from('trucks')
       .update({
         name: profile.name,
+        business_type: profile.business_type,
         cuisine_type: profile.cuisine_type,
         description: profile.description,
         signature_dishes: profile.signature_dishes,
@@ -257,6 +267,7 @@ export default function ProfilePage() {
 
   const completionItems = [
     !!profile.name,
+    !!profile.business_type,
     !!profile.cuisine_type,
     !!profile.description,
     !!profile.signature_dishes,
@@ -312,13 +323,37 @@ export default function ProfilePage() {
         </p>
       </div>
 
-      {/* TRUCK IDENTITY */}
+      {/* BUSINESS IDENTITY */}
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>🚚 Truck Identity</h2>
+        <h2 className={styles.sectionTitle}>🍽️ Business Identity</h2>
         <p className={styles.sectionHint}>This is what AI uses to write your posts and event applications.</p>
 
         <div className={styles.field}>
-          <label className={styles.fieldLabel}>Truck Name</label>
+          <label className={styles.fieldLabel}>Business Type</label>
+          {editing ? (
+            <div className={styles.cuisineGrid}>
+              {BUSINESS_TYPE_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  className={`${styles.cuisineChip} ${profile.business_type === option.id ? styles.cuisineChipActive : ''}`}
+                  onClick={() => setProfile({ ...profile, business_type: option.id })}
+                >
+                  <span>{option.emoji}</span>
+                  <span>{option.label}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.fieldValue}>
+              {BUSINESS_TYPE_OPTIONS.find(b => b.id === profile.business_type)
+                ? `${BUSINESS_TYPE_OPTIONS.find(b => b.id === profile.business_type)!.emoji} ${BUSINESS_TYPE_OPTIONS.find(b => b.id === profile.business_type)!.label}`
+                : <span className={styles.fieldValueEmpty}>Not set</span>}
+            </div>
+          )}
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.fieldLabel}>Business Name</label>
           {editing ? (
             <input
               className="form-input"

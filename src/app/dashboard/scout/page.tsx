@@ -100,6 +100,7 @@ export default function ScoutPage() {
         body: JSON.stringify({
           userId: user.id,
           truckName: truckData?.name,
+          businessType: truckData?.business_type,
           cuisine: truckData?.cuisine_type,
           vibe: truckData?.vibe,
           signatureDishes: truckData?.signature_dishes,
@@ -254,7 +255,7 @@ export default function ScoutPage() {
             onClick={handleScout}
             disabled={loading}
           >
-            🔄 Scout Again
+            🔄 Find New Spots
           </button>
         </>
       )}

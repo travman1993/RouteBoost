@@ -112,6 +112,7 @@ export default function EventsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           truckName: truckData?.name,
+          businessType: truckData?.business_type,
           cuisine: truckData?.cuisine_type,
           vibe: truckData?.vibe,
           locationAddress: todayLocation?.address || '',
