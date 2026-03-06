@@ -6,7 +6,7 @@ import styles from './dashboard.module.css';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Today', icon: '📍', activeIcon: '📍' },
-  { href: '/dashboard/posts', label: 'Posts', icon: '📣', activeIcon: '📣' },
+  { href: '/dashboard/route', label: 'Route', icon: '🗺️', activeIcon: '🗺️' },
   { href: '/dashboard/events', label: 'Events', icon: '🎪', activeIcon: '🎪' },
   { href: '/dashboard/insights', label: 'Insights', icon: '🧠', activeIcon: '🧠' },
   { href: '/dashboard/profile', label: 'Profile', icon: '👤', activeIcon: '👤' },
@@ -27,7 +27,9 @@ export default function DashboardLayout({
 
       <nav className={styles.bottomNav}>
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = item.href === '/dashboard'
+            ? pathname === '/dashboard'
+            : pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}

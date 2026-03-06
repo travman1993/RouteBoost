@@ -1,0 +1,283 @@
+.routePage {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  color: var(--slate);
+  font-size: 0.9rem;
+}
+
+/* EMPTY STATE */
+.emptyState {
+  background: var(--night-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.emptyState h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.emptyState p {
+  color: var(--slate);
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.emptyLink {
+  color: var(--flame);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+/* DAY LIST */
+.dayList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dayCard {
+  background: var(--night-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+
+.dayCardToday {
+  border-color: rgba(255, 92, 0, 0.3);
+}
+
+.dayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dayLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dayName {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.todayBadge {
+  background: rgba(255, 92, 0, 0.15);
+  color: var(--flame);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.demandPill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+/* LOCATION */
+.locationInfo {
+  margin-bottom: 12px;
+}
+
+.locationName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.locationAddress {
+  color: var(--slate);
+  font-size: 0.82rem;
+}
+
+/* NO SPOT */
+.noSpot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--slate);
+  font-size: 0.88rem;
+}
+
+.addSpotLink {
+  color: var(--flame);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+/* OPTIMIZE BUTTON */
+.optimizeBtn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(255, 92, 0, 0.1);
+  border: 1px solid rgba(255, 92, 0, 0.25);
+  color: var(--flame);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.optimizeBtn:hover {
+  background: rgba(255, 92, 0, 0.18);
+  border-color: rgba(255, 92, 0, 0.5);
+}
+
+.optimizeBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reoptimizeBtn {
+  background: transparent;
+  border: none;
+  color: var(--slate);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* INSIGHT BOX */
+.insightBox {
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.insight_good {
+  background: rgba(0, 232, 157, 0.08);
+  border: 1px solid rgba(0, 232, 157, 0.2);
+}
+
+.insight_medium {
+  background: rgba(255, 184, 77, 0.08);
+  border: 1px solid rgba(255, 184, 77, 0.2);
+}
+
+.insight_low {
+  background: rgba(255, 60, 60, 0.08);
+  border: 1px solid rgba(255, 60, 60, 0.2);
+}
+
+.insightHeader {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.insight_good .statusDot { background: #00E89D; }
+.insight_medium .statusDot { background: #FFB84D; }
+.insight_low .statusDot { background: #FF3C3C; }
+
+.statusLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.insight_good .statusLabel { color: #00E89D; }
+.insight_medium .statusLabel { color: #FFB84D; }
+.insight_low .statusLabel { color: #FF3C3C; }
+
+.insightText {
+  color: var(--cream);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ALTERNATIVE */
+.alternativeBox {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.alternativeLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+
+.alternativeName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.alternativeAddress {
+  color: var(--slate);
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.alternativeScore {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #00E89D;
+  margin-bottom: 6px;
+}
+
+.alternativeReasoning {
+  color: var(--slate);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
