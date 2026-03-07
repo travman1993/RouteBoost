@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     'food truck growth',
   ],
   authors: [{ name: 'RouteBoost' }],
+  verification: {
+    google: 'ggENRdR416R8xaIUjmrCURzqK0n5cbiBhUskY7TwoPQ',
+  },
   robots: {
     index: true,
     follow: true,
