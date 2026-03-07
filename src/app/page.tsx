@@ -324,8 +324,8 @@ export default function LandingPage() {
               <Image
                 src="/icons/icon-512.png"
                 alt="RouteBoost app icon"
-                width={100}
-                height={100}
+                width={200}
+                height={200}
                 className={styles.addToHomeIcon}
               />
             </div>
