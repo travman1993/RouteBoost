@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: 'RouteBoost',
     images: [
       {
-        url: '/icons/OGimage.png',
+        url: 'https://routeboost.dev/icons/OGimage.png',
         width: 1200,
         height: 630,
         alt: 'RouteBoost — AI Growth Assistant for Food Trucks',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'RouteBoost — AI Growth Assistant for Food Trucks',
     description:
       'AI helps food trucks choose better locations, post on social media automatically, and get booked for events.',
