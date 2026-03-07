@@ -773,24 +773,39 @@ export default function ProfilePage() {
           <span className={styles.accountValue}>$25/mo</span>
         </div>
 
-        {(subStatus === 'trial' || subStatus === 'trial_expired' || subStatus === 'canceled' || subStatus === 'none') && (
+        {subStatus === 'trial' && (
+          <div className={styles.trialActiveNote}>
+            You&apos;re on your free trial{trialDays !== null ? ` — ${trialDays} day${trialDays !== 1 ? 's' : ''} remaining` : ''}. No action needed.
+          </div>
+        )}
+
+        {(subStatus === 'trial_expired' || subStatus === 'canceled' || subStatus === 'none') && (
           <button
             className={styles.upgradeBtn}
             onClick={handleSubscribe}
             disabled={billingLoading}
           >
-            {billingLoading ? 'Loading...' : subStatus === 'trial' ? '🚀 Subscribe Now — 7-Day Free Trial' : '🚀 Subscribe — $25/mo'}
+            {billingLoading ? 'Loading...' : '🚀 Subscribe — $25/mo'}
           </button>
         )}
 
         {(subStatus === 'active' || subStatus === 'past_due') && (
-          <button
-            className={styles.manageBtn}
-            onClick={handleManageBilling}
-            disabled={billingLoading}
-          >
-            {billingLoading ? 'Loading...' : '⚙️ Manage Subscription'}
-          </button>
+          <>
+            <button
+              className={styles.manageBtn}
+              onClick={handleManageBilling}
+              disabled={billingLoading}
+            >
+              {billingLoading ? 'Loading...' : '⚙️ Manage Subscription'}
+            </button>
+            <button
+              className={styles.cancelBtn}
+              onClick={handleManageBilling}
+              disabled={billingLoading}
+            >
+              Cancel membership
+            </button>
+          </>
         )}
 
         {billingSuccess && (
