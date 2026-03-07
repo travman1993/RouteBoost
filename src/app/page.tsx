@@ -8,7 +8,7 @@ export default function LandingPage() {
       {/* NAV */}
       <nav className={styles.nav}>
         <a href="/" className={styles.navLogo}>
-          <span className={styles.logoIcon}>🔥</span>
+          <Image src="/icons/icon-192.png" alt="RouteBoost" width={32} height={32} className={styles.logoIcon} />
           RouteBoost
         </a>
         <Link href="/auth/signup" className={styles.navCta}>Start Free Trial</Link>
@@ -343,7 +343,7 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer className={styles.footer}>
-        <div className={styles.footerLogo}>🔥 RouteBoost</div>
+        <div className={styles.footerLogo}><Image src="/icons/icon-192.png" alt="RouteBoost" width={24} height={24} style={{ borderRadius: '6px', verticalAlign: 'middle', marginRight: '8px' }} />RouteBoost</div>
         <p>The AI Growth Assistant for Mobile Food Businesses</p>
         <p className={styles.footerLinks}>
           <Link href="/privacy">Privacy</Link> &nbsp;·&nbsp; <Link href="/terms">Terms</Link> &nbsp;·&nbsp; <Link href="/contact">Contact</Link>
