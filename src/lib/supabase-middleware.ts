@@ -29,6 +29,11 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Don't intercept POST requests — they're handled by client-side JS or route handlers
+  if (request.method === 'POST') {
+    return supabaseResponse;
+  }
+
   const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
   const isPublicPage = request.nextUrl.pathname === '/' ||
     request.nextUrl.pathname === '/privacy' ||
