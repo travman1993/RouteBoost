@@ -322,7 +322,7 @@ export default function LandingPage() {
             <div className={styles.addToHomeStepNum}>3</div>
             <div className={styles.addToHomeIconWrap}>
               <Image
-                src="/icons/icon-192.png"
+                src="/icons/icon-512.png"
                 alt="RouteBoost app icon"
                 width={100}
                 height={100}
