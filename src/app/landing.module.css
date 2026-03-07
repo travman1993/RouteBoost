@@ -839,4 +839,98 @@
     .statsGrid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
     .btnPrimary, .btnSecondary { padding: 14px 28px; font-size: 0.95rem; }
     .pricingCard { padding: 36px 24px; }
+    .addToHomeSteps { flex-direction: column; align-items: center; }
+    .addToHomeArrow { transform: rotate(90deg); }
   }
+
+/* ===== ADD TO HOME SCREEN ===== */
+.addToHome {
+  padding: 100px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.addToHomeSub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin: 12px 0 56px;
+}
+
+.addToHomeSteps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.addToHomeStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 220px;
+}
+
+.addToHomeStepNum {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--flame);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.addToHomePhoneFrame {
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  width: 220px;
+}
+
+.addToHomeScreenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.addToHomeIconWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(249, 115, 22, 0.4);
+  margin: 40px 0;
+}
+
+.addToHomeIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.addToHomeCaption {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.addToHomeCaption strong {
+  color: var(--cream);
+}
+
+.addToHomeArrow {
+  font-size: 1.8rem;
+  color: var(--flame);
+  margin-top: 160px;
+  flex-shrink: 0;
+}

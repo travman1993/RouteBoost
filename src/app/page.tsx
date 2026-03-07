@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './landing.module.css';
 
 export default function LandingPage() {
@@ -280,6 +281,56 @@ export default function LandingPage() {
           </div>
           <Link href="/auth/signup" className={styles.btnPrimary}>Start Free Trial →</Link>
           <p className={styles.pricingGuarantee}>No credit card required to start.</p>
+        </div>
+      </section>
+
+      {/* ADD TO HOME SCREEN */}
+      <section className={styles.addToHome}>
+        <div className={styles.sectionLabel}>Always Within Reach</div>
+        <h2 className={styles.sectionTitleCenter}>Add RouteBoost to<br />your home screen</h2>
+        <p className={styles.addToHomeSub}>No app store needed — get instant access right from your phone.</p>
+        <div className={styles.addToHomeSteps}>
+          <div className={styles.addToHomeStep}>
+            <div className={styles.addToHomeStepNum}>1</div>
+            <div className={styles.addToHomePhoneFrame}>
+              <Image
+                src="/screenshots/IMG_6494.jpg"
+                alt="Tap the Share button in Safari"
+                width={220}
+                height={390}
+                className={styles.addToHomeScreenshot}
+              />
+            </div>
+            <p className={styles.addToHomeCaption}>Tap the <strong>Share</strong> button at the bottom of Safari</p>
+          </div>
+          <div className={styles.addToHomeArrow}>→</div>
+          <div className={styles.addToHomeStep}>
+            <div className={styles.addToHomeStepNum}>2</div>
+            <div className={styles.addToHomePhoneFrame}>
+              <Image
+                src="/screenshots/IMG_6495.jpg"
+                alt="Tap Add to Home Screen"
+                width={220}
+                height={390}
+                className={styles.addToHomeScreenshot}
+              />
+            </div>
+            <p className={styles.addToHomeCaption}>Tap <strong>Add to Home Screen</strong></p>
+          </div>
+          <div className={styles.addToHomeArrow}>→</div>
+          <div className={styles.addToHomeStep}>
+            <div className={styles.addToHomeStepNum}>3</div>
+            <div className={styles.addToHomeIconWrap}>
+              <Image
+                src="/icons/icon-192.png"
+                alt="RouteBoost app icon"
+                width={100}
+                height={100}
+                className={styles.addToHomeIcon}
+              />
+            </div>
+            <p className={styles.addToHomeCaption}>RouteBoost lives on your home screen — open instantly, every day</p>
+          </div>
         </div>
       </section>
 
