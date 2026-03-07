@@ -903,8 +903,8 @@
 }
 
 .addToHomeIconWrap {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(249, 115, 22, 0.4);
