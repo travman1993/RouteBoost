@@ -55,6 +55,7 @@ export default function EventsPage() {
   const [currentPitchEvent, setCurrentPitchEvent] = useState('');
   const [copiedPitch, setCopiedPitch] = useState(false);
   const [userId, setUserId] = useState('');
+  const [customCity, setCustomCity] = useState('');
 
   const supabase = createClient();
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -115,7 +116,7 @@ export default function EventsPage() {
           businessType: truckData?.business_type,
           cuisine: truckData?.cuisine_type,
           vibe: truckData?.vibe,
-          locationAddress: todayLocation?.address || '',
+          locationAddress: customCity.trim() || todayLocation?.address || '',
           userId,
         }),
       });
@@ -252,6 +253,15 @@ export default function EventsPage() {
             <p className={styles.scoutDesc}>
               AI will find festivals, markets, breweries, and booking opportunities near your area that fit your cuisine and vibe.
             </p>
+            <div className={styles.locationOverride}>
+              <label className={styles.overrideLabel}>Search a different area</label>
+              <input
+                className={`form-input ${styles.overrideInput}`}
+                placeholder={todayLocation?.address ? `Default: ${todayLocation.address}` : 'e.g. Cartersville, GA'}
+                value={customCity}
+                onChange={(e) => setCustomCity(e.target.value)}
+              />
+            </div>
             <button
               className={styles.scoutBtn}
               onClick={handleScout}

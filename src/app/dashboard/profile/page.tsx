@@ -35,6 +35,21 @@ const VIBE_OPTIONS = [
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+const US_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
+  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
+  'VA','WA','WV','WI','WY',
+];
+
+const COMMON_CITIES = [
+  'Atlanta','Cartersville','Marietta','Kennesaw','Acworth','Canton','Rome','Dalton',
+  'Nashville','Knoxville','Chattanooga','Memphis','Murfreesboro','Franklin',
+  'Birmingham','Huntsville','Montgomery','Mobile',
+  'Charlotte','Raleigh','Durham','Greensboro',
+  'Columbia','Greenville','Charleston',
+];
+
 interface Location {
   id: string;
   day_of_week: string;
@@ -65,7 +80,9 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showAddLocation, setShowAddLocation] = useState(false);
-  const [newLocation, setNewLocation] = useState({ day: 'Monday', name: '', address: '' });
+  const [newLocation, setNewLocation] = useState({ day: 'Monday', name: '', street: '', city: '', state: 'GA' });
+  const [editingLocationId, setEditingLocationId] = useState<string | null>(null);
+  const [editLocation, setEditLocation] = useState({ day: 'Monday', name: '', street: '', city: '', state: 'GA' });
 
   const supabase = createClient();
   const router = useRouter();
@@ -165,8 +182,20 @@ export default function ProfilePage() {
     setTimeout(() => setSaved(false), 2000);
   }
 
+  function buildAddress(street: string, city: string, state: string): string {
+    return [street, city, state].filter(Boolean).join(', ');
+  }
+
+  function parseAddress(address: string): { street: string; city: string; state: string } {
+    const parts = address.split(',').map((s) => s.trim());
+    if (parts.length >= 3) return { street: parts.slice(0, -2).join(', '), city: parts[parts.length - 2], state: parts[parts.length - 1] };
+    if (parts.length === 2) return { street: '', city: parts[0], state: parts[1] };
+    return { street: parts[0] || '', city: '', state: '' };
+  }
+
   async function handleAddLocation() {
-    if (!newLocation.name || !newLocation.address) return;
+    const address = buildAddress(newLocation.street, newLocation.city, newLocation.state);
+    if (!newLocation.name || !newLocation.city) return;
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
@@ -174,11 +203,29 @@ export default function ProfilePage() {
       truck_id: user.id,
       day_of_week: newLocation.day,
       name: newLocation.name,
-      address: newLocation.address,
+      address,
     });
 
-    setNewLocation({ day: 'Monday', name: '', address: '' });
+    setNewLocation({ day: 'Monday', name: '', street: '', city: '', state: 'GA' });
     setShowAddLocation(false);
+    loadLocations();
+  }
+
+  function handleStartEdit(loc: Location) {
+    const parsed = parseAddress(loc.address);
+    setEditingLocationId(loc.id);
+    setEditLocation({ day: loc.day_of_week, name: loc.name, ...parsed });
+  }
+
+  async function handleSaveEdit() {
+    if (!editingLocationId) return;
+    const address = buildAddress(editLocation.street, editLocation.city, editLocation.state);
+    await supabase.from('locations').update({
+      day_of_week: editLocation.day,
+      name: editLocation.name,
+      address,
+    }).eq('id', editingLocationId);
+    setEditingLocationId(null);
     loadLocations();
   }
 
@@ -602,20 +649,61 @@ export default function ProfilePage() {
         <h2 className={styles.sectionTitle}>📍 Weekly Locations</h2>
         <p className={styles.sectionHint}>Your regular weekly spots. These power your daily plan.</p>
 
-        {locations.length > 0 ? (
-          locations.map((loc) => (
-            <div key={loc.id} className={styles.locationItem}>
-              <div className={styles.locationInfo}>
-                <span className={styles.locationDay}>{loc.day_of_week}</span>
-                <span className={styles.locationName}>{loc.name}</span>
-                <span className={styles.locationAddress}>{loc.address}</span>
-              </div>
-              <button className={styles.deleteBtn} onClick={() => handleDeleteLocation(loc.id)}>
-                ✕
-              </button>
+        {[...locations]
+          .sort((a, b) => DAYS.indexOf(a.day_of_week) - DAYS.indexOf(b.day_of_week))
+          .map((loc) => (
+            <div key={loc.id}>
+              {editingLocationId === loc.id ? (
+                <div className={styles.addLocationForm}>
+                  <div className="form-group">
+                    <label className="form-label">Day</label>
+                    <select className="form-input" value={editLocation.day} onChange={(e) => setEditLocation({ ...editLocation, day: e.target.value })}>
+                      {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Spot Name</label>
+                    <input className="form-input" value={editLocation.name} onChange={(e) => setEditLocation({ ...editLocation, name: e.target.value })} placeholder="e.g. Downtown Office Park" />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Street / Area <span style={{ color: 'var(--slate)', fontWeight: 400 }}>(optional)</span></label>
+                    <input className="form-input" value={editLocation.street} onChange={(e) => setEditLocation({ ...editLocation, street: e.target.value })} placeholder="e.g. 123 Main St" />
+                  </div>
+                  <div className={styles.cityStateRow}>
+                    <div className="form-group" style={{ flex: 1 }}>
+                      <label className="form-label">City</label>
+                      <input className="form-input" list="cities-edit" value={editLocation.city} onChange={(e) => setEditLocation({ ...editLocation, city: e.target.value })} placeholder="e.g. Cartersville" />
+                      <datalist id="cities-edit">{COMMON_CITIES.map((c) => <option key={c} value={c} />)}</datalist>
+                    </div>
+                    <div className="form-group" style={{ width: '90px' }}>
+                      <label className="form-label">State</label>
+                      <select className="form-input" value={editLocation.state} onChange={(e) => setEditLocation({ ...editLocation, state: e.target.value })}>
+                        {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className={styles.addLocationActions}>
+                    <button className="btn btn-secondary" onClick={() => setEditingLocationId(null)}>Cancel</button>
+                    <button className="btn btn-primary" onClick={handleSaveEdit} disabled={!editLocation.name || !editLocation.city}>Save</button>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.locationItem}>
+                  <div className={styles.locationInfo}>
+                    <span className={styles.locationDay}>{loc.day_of_week}</span>
+                    <span className={styles.locationName}>{loc.name}</span>
+                    <span className={styles.locationAddress}>{loc.address}</span>
+                  </div>
+                  <div className={styles.locationActions}>
+                    <button className={styles.editLocBtn} onClick={() => handleStartEdit(loc)}>Edit</button>
+                    <button className={styles.deleteBtn} onClick={() => handleDeleteLocation(loc.id)}>✕</button>
+                  </div>
+                </div>
+              )}
             </div>
-          ))
-        ) : (
+          ))}
+
+        {locations.length === 0 && (
           <div className={styles.fieldValue}>
             <span className={styles.fieldValueEmpty}>No locations added yet</span>
           </div>
@@ -625,45 +713,34 @@ export default function ProfilePage() {
           <div className={styles.addLocationForm}>
             <div className="form-group">
               <label className="form-label">Day</label>
-              <select
-                className="form-input"
-                value={newLocation.day}
-                onChange={(e) => setNewLocation({ ...newLocation, day: e.target.value })}
-              >
-                {DAYS.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
+              <select className="form-input" value={newLocation.day} onChange={(e) => setNewLocation({ ...newLocation, day: e.target.value })}>
+                {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div className="form-group">
               <label className="form-label">Spot Name</label>
-              <input
-                className="form-input"
-                value={newLocation.name}
-                onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })}
-                placeholder="e.g. Downtown Office Park"
-              />
+              <input className="form-input" value={newLocation.name} onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })} placeholder="e.g. Downtown Office Park" />
             </div>
             <div className="form-group">
-              <label className="form-label">Address</label>
-              <input
-                className="form-input"
-                value={newLocation.address}
-                onChange={(e) => setNewLocation({ ...newLocation, address: e.target.value })}
-                placeholder="e.g. 123 Main St, Austin TX"
-              />
+              <label className="form-label">Street / Area <span style={{ color: 'var(--slate)', fontWeight: 400 }}>(optional)</span></label>
+              <input className="form-input" value={newLocation.street} onChange={(e) => setNewLocation({ ...newLocation, street: e.target.value })} placeholder="e.g. 123 Main St or Walmart parking lot" />
+            </div>
+            <div className={styles.cityStateRow}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label className="form-label">City</label>
+                <input className="form-input" list="cities-new" value={newLocation.city} onChange={(e) => setNewLocation({ ...newLocation, city: e.target.value })} placeholder="e.g. Cartersville" />
+                <datalist id="cities-new">{COMMON_CITIES.map((c) => <option key={c} value={c} />)}</datalist>
+              </div>
+              <div className="form-group" style={{ width: '90px' }}>
+                <label className="form-label">State</label>
+                <select className="form-input" value={newLocation.state} onChange={(e) => setNewLocation({ ...newLocation, state: e.target.value })}>
+                  {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
             </div>
             <div className={styles.addLocationActions}>
-              <button className="btn btn-secondary" onClick={() => setShowAddLocation(false)}>
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={handleAddLocation}
-                disabled={!newLocation.name || !newLocation.address}
-              >
-                Add
-              </button>
+              <button className="btn btn-secondary" onClick={() => setShowAddLocation(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleAddLocation} disabled={!newLocation.name || !newLocation.city}>Add</button>
             </div>
           </div>
         ) : (

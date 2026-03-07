@@ -19,10 +19,19 @@ interface DayPosts {
     caption: string;
     hashtags: string;
     saved: boolean;
+    posted: boolean;
   }[];
 }
 
 const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+function getWeekKey(): string {
+  const now = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  return monday.toISOString().split('T')[0];
+}
+
 
 export default function WeeklyPostsPage() {
   const [weeklyPosts, setWeeklyPosts] = useState<DayPosts[]>([]);
@@ -66,6 +75,18 @@ export default function WeeklyPostsPage() {
       );
       setServingDays(sorted);
     }
+
+    // Restore this week's posts from localStorage
+    const storageKey = `routeboost_weekly_${user.id}_${getWeekKey()}`;
+    const cached = localStorage.getItem(storageKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        setWeeklyPosts(parsed);
+        setGenerated(true);
+        if (parsed.length > 0) setExpandedDay(parsed[0].day);
+      } catch { /* ignore */ }
+    }
   }
 
   async function handleGenerate() {
@@ -104,17 +125,37 @@ export default function WeeklyPostsPage() {
       if (data.error) {
         setError(data.error);
       } else {
-        setWeeklyPosts(data.weeklyPosts || []);
+        const posts = (data.weeklyPosts || []).map((day: any) => ({
+          ...day,
+          posts: day.posts.map((p: any) => ({ ...p, saved: false, posted: false })),
+        }));
+        setWeeklyPosts(posts);
         setGenerated(true);
-        if (data.weeklyPosts?.length > 0) {
-          setExpandedDay(data.weeklyPosts[0].day);
-        }
+        if (posts.length > 0) setExpandedDay(posts[0].day);
+        const storageKey = `routeboost_weekly_${userId}_${getWeekKey()}`;
+        localStorage.setItem(storageKey, JSON.stringify(posts));
       }
     } catch {
       setError('Failed to generate weekly posts. Please try again.');
     } finally {
       setLoading(false);
     }
+  }
+
+  function persistPosts(updated: DayPosts[]) {
+    setWeeklyPosts(updated);
+    const storageKey = `routeboost_weekly_${userId}_${getWeekKey()}`;
+    localStorage.setItem(storageKey, JSON.stringify(updated));
+  }
+
+  function handleMarkPosted(dayIndex: number, postIndex: number) {
+    const updated = weeklyPosts.map((day, di) => ({
+      ...day,
+      posts: day.posts.map((p, pi) =>
+        di === dayIndex && pi === postIndex ? { ...p, posted: true } : p
+      ),
+    }));
+    persistPosts(updated);
   }
 
   function handleCopy(dayIndex: number, postIndex: number) {
@@ -145,9 +186,13 @@ export default function WeeklyPostsPage() {
       scheduled_date: getNextDate(dayData.day),
     });
 
-    const updated = [...weeklyPosts];
-    updated[dayIndex].posts[postIndex].saved = true;
-    setWeeklyPosts(updated);
+    const updated = weeklyPosts.map((day, di) => ({
+      ...day,
+      posts: day.posts.map((p, pi) =>
+        di === dayIndex && pi === postIndex ? { ...p, saved: true } : p
+      ),
+    }));
+    persistPosts(updated);
 
     setSavedId(`${dayIndex}-${postIndex}`);
     setTimeout(() => setSavedId(''), 2000);
@@ -180,7 +225,7 @@ export default function WeeklyPostsPage() {
       ...day,
       posts: day.posts.map((p) => ({ ...p, saved: true })),
     }));
-    setWeeklyPosts(updated);
+    persistPosts(updated);
   }
 
   function getNextDate(dayName: string): string {
@@ -314,10 +359,14 @@ export default function WeeklyPostsPage() {
               {expandedDay === day.day && (
                 <div className={styles.dayPosts}>
                   {day.posts.map((post, postIndex) => (
-                    <div key={postIndex} className={styles.postCard}>
+                    <div
+                      key={postIndex}
+                      className={`${styles.postCard} ${post.posted ? styles.postCardPosted : ''}`}
+                    >
                       <div className={styles.postSlot}>
                         <span>{getTimeEmoji(post.time_slot)}</span>
                         <span>{post.time_slot}</span>
+                        {post.posted && <span className={styles.postedBadge}>Posted ✓</span>}
                       </div>
                       <div className={styles.postCaption}>{post.caption}</div>
                       {post.hashtags && (
@@ -328,9 +377,7 @@ export default function WeeklyPostsPage() {
                           className={styles.postCopyBtn}
                           onClick={() => handleCopy(dayIndex, postIndex)}
                         >
-                          {copiedId === `${dayIndex}-${postIndex}`
-                            ? '✓ Copied!'
-                            : '📋 Copy'}
+                          {copiedId === `${dayIndex}-${postIndex}` ? '✓ Copied!' : '📋 Copy'}
                         </button>
                         {post.saved ? (
                           <span className={styles.postSavedTag}>✓ Saved</span>
@@ -339,9 +386,15 @@ export default function WeeklyPostsPage() {
                             className={styles.postSaveBtn}
                             onClick={() => handleSave(dayIndex, postIndex)}
                           >
-                            {savedId === `${dayIndex}-${postIndex}`
-                              ? '✓ Saved!'
-                              : '💾 Save'}
+                            {savedId === `${dayIndex}-${postIndex}` ? '✓ Saved!' : '💾 Save'}
+                          </button>
+                        )}
+                        {!post.posted && (
+                          <button
+                            className={styles.postPostedBtn}
+                            onClick={() => handleMarkPosted(dayIndex, postIndex)}
+                          >
+                            Mark Posted
                           </button>
                         )}
                       </div>

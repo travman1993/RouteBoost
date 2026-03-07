@@ -312,7 +312,39 @@
     font-weight: 600;
     color: var(--mint);
   }
-  
+
+  .postPostedBtn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--slate);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .postPostedBtn:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--cream);
+  }
+
+  .postCardPosted {
+    opacity: 0.45;
+  }
+
+  .postedBadge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--mint);
+    background: rgba(0, 232, 157, 0.1);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+
   /* REGENERATE */
   .regenerateBtn {
     width: 100%;

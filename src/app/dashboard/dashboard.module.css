@@ -522,6 +522,52 @@
   flex: 1;
 }
 
+.feedbackSection {
+  margin-bottom: 14px;
+}
+
+.feedbackSectionLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.feedbackChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.feedbackChip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--slate);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.feedbackChip:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--cream);
+}
+
+.feedbackChipActive {
+  background: rgba(255, 92, 0, 0.15);
+  border-color: rgba(255, 92, 0, 0.4);
+  color: var(--flame);
+}
+
+.feedbackInput {
+  font-size: 0.88rem !important;
+  padding: 10px 14px !important;
+}
+
 /* ===== LOADING ===== */
 .loadingPage {
   min-height: 60vh;

@@ -80,6 +80,9 @@ export default function TodayPage() {
   const [loading, setLoading] = useState(true);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState('');
+  const [feedbackCrowdType, setFeedbackCrowdType] = useState('');
+  const [feedbackSoldWell, setFeedbackSoldWell] = useState('');
+  const [feedbackWouldReturn, setFeedbackWouldReturn] = useState('');
   const [feedbackNote, setFeedbackNote] = useState('');
   const [feedbackSaved, setFeedbackSaved] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -163,11 +166,19 @@ export default function TodayPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Build a structured notes string from all the extra fields
+      const noteParts: string[] = [];
+      if (feedbackCrowdType) noteParts.push(`Crowd: ${feedbackCrowdType}`);
+      if (feedbackSoldWell) noteParts.push(`Sold well: ${feedbackSoldWell}`);
+      if (feedbackWouldReturn) noteParts.push(`Would return: ${feedbackWouldReturn}`);
+      if (feedbackNote) noteParts.push(feedbackNote);
+      const combinedNotes = noteParts.join(' | ') || null;
+
       await supabase.from('daily_feedback').insert({
         truck_id: user.id,
         location_id: todayLocation?.id || null,
         rating: feedbackRating,
-        notes: feedbackNote || null,
+        notes: combinedNotes,
         date: new Date().toISOString().split('T')[0],
       });
 
@@ -177,6 +188,11 @@ export default function TodayPage() {
       setTimeout(() => {
         setShowFeedback(false);
         setFeedbackSaved(false);
+        setFeedbackRating('');
+        setFeedbackCrowdType('');
+        setFeedbackSoldWell('');
+        setFeedbackWouldReturn('');
+        setFeedbackNote('');
       }, 1500);
     } catch (err) {
       console.error('Feedback error:', err);
@@ -339,6 +355,8 @@ export default function TodayPage() {
             ) : (
               <>
                 <h3 className={styles.feedbackTitle}>How did today go?</h3>
+
+                {/* Overall rating */}
                 <div className={styles.feedbackOptions}>
                   {[
                     { id: 'great', emoji: '🔥', label: 'Great' },
@@ -347,9 +365,7 @@ export default function TodayPage() {
                   ].map((option) => (
                     <button
                       key={option.id}
-                      className={`${styles.feedbackOption} ${
-                        feedbackRating === option.id ? styles.feedbackOptionActive : ''
-                      }`}
+                      className={`${styles.feedbackOption} ${feedbackRating === option.id ? styles.feedbackOptionActive : ''}`}
                       onClick={() => setFeedbackRating(option.id)}
                     >
                       <span className={styles.feedbackEmoji}>{option.emoji}</span>
@@ -357,17 +373,60 @@ export default function TodayPage() {
                     </button>
                   ))}
                 </div>
+
+                {/* Crowd type */}
+                <div className={styles.feedbackSection}>
+                  <p className={styles.feedbackSectionLabel}>What was the crowd like?</p>
+                  <div className={styles.feedbackChips}>
+                    {['Lunch Rush', 'Steady Traffic', 'Event Crowd', 'Slow'].map((c) => (
+                      <button
+                        key={c}
+                        className={`${styles.feedbackChip} ${feedbackCrowdType === c ? styles.feedbackChipActive : ''}`}
+                        onClick={() => setFeedbackCrowdType(feedbackCrowdType === c ? '' : c)}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* What sold well */}
+                <div className={styles.feedbackSection}>
+                  <p className={styles.feedbackSectionLabel}>What sold well? <span style={{ color: 'var(--slate)', fontWeight: 400 }}>(optional)</span></p>
+                  <input
+                    className={`form-input ${styles.feedbackInput}`}
+                    placeholder="e.g. Birria tacos, the combo deal..."
+                    value={feedbackSoldWell}
+                    onChange={(e) => setFeedbackSoldWell(e.target.value)}
+                  />
+                </div>
+
+                {/* Would return */}
+                <div className={styles.feedbackSection}>
+                  <p className={styles.feedbackSectionLabel}>Would you come back to this spot?</p>
+                  <div className={styles.feedbackChips}>
+                    {['Yes', 'Maybe', 'No'].map((r) => (
+                      <button
+                        key={r}
+                        className={`${styles.feedbackChip} ${feedbackWouldReturn === r ? styles.feedbackChipActive : ''}`}
+                        onClick={() => setFeedbackWouldReturn(feedbackWouldReturn === r ? '' : r)}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Extra notes */}
                 <textarea
                   className={styles.feedbackNote}
-                  placeholder="Any notes? Weather, crowd, events nearby..."
+                  placeholder="Anything else? Weather impact, events nearby..."
                   value={feedbackNote}
                   onChange={(e) => setFeedbackNote(e.target.value)}
                 />
+
                 <div className={styles.feedbackActions}>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => setShowFeedback(false)}
-                  >
+                  <button className="btn btn-secondary" onClick={() => setShowFeedback(false)}>
                     Cancel
                   </button>
                   <button
