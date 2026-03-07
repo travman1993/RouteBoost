@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import EmailCapture from '@/components/EmailCapture';
 import styles from './landing.module.css';
 
 export default function LandingPage() {
@@ -11,7 +12,10 @@ export default function LandingPage() {
           <Image src="/icons/icon-192.png" alt="RouteBoost" width={32} height={32} className={styles.logoIcon} />
           RouteBoost
         </a>
-        <Link href="/auth/signup" className={styles.navCta}>Start Free Trial</Link>
+        <div className={styles.navActions}>
+          <Link href="/auth/login" className={styles.navLogin}>Log In</Link>
+          <Link href="/auth/signup" className={styles.navCta}>Start Free Trial</Link>
+        </div>
       </nav>
 
       {/* HERO */}
@@ -333,6 +337,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <EmailCapture />
 
       {/* FINAL CTA */}
       <section className={styles.finalCta}>
