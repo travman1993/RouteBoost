@@ -6,6 +6,15 @@ export const metadata: Metadata = {
   description:
     'AI helps food trucks choose better locations, market automatically, and get booked for events.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'RouteBoost',
+  },
+  icons: {
+    apple: '/icons/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
